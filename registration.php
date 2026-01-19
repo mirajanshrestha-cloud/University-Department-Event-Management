@@ -9,7 +9,7 @@ if ($_POST) {
         $_POST['email'],
         $_POST['event_id']
     ]);
-    
+
     if ($success) {
         $message = "Registered Successfully!";
     } else {
@@ -103,4 +103,4 @@ if ($_POST) {
     <?php if($message) echo "<div class='message'>$message</div>"; ?>
 </div>
 </body>
-</html>
+

@@ -18,7 +18,6 @@ $where[] = "organizer LIKE ?";
 $params[] = "%".$_GET['organizer']."%";
 }
 
-
 $sql = "SELECT * FROM events";
 if ($where) $sql .= " WHERE " . implode(" AND ", $where);
 
@@ -34,7 +33,6 @@ events = $stmt->fetchAll();
 <div id="count-<?= $event['id'] ?>"></div>
 <button onclick="loadCount(<?= $event['id'] ?>)">Refresh Count</button>
 <?php endforeach; ?>
-
 
 <script>
 function loadCount(eventId) {
