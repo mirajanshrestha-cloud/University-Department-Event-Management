@@ -19,9 +19,14 @@ if ($_POST) {
 ?>
 
 <?php require '../includes/header.php'; ?>
+<html>
+<head>
+    <h2>Login</h2>
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+    <form class="form" method="POST">
 
-<form class="form" method="POST">
-<h2>Login</h2>
 <p class="error"><?= htmlspecialchars($error) ?></p>
 
 <label>Username</label>
@@ -32,5 +37,8 @@ if ($_POST) {
 
 <button>Login</button>
 </form>
+</body>
+
 
 <?php require '../includes/footer.php'; ?>
+</html>

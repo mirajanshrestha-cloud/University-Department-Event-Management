@@ -1,4 +1,6 @@
-body { font-family: Arial; background:#f4f4f4; }
+body { 
+    font-family: Arial; background:#f4f4f4; 
+}
 
 header, footer {
     background:#333;
