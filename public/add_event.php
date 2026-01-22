@@ -16,9 +16,13 @@ if ($_POST && check_csrf($_POST['csrf'])) {
 require '../includes/header.php';
 ?>
 
+<html>
+<head>
+    <h2>Add Event</h2>
+    <link re="stylesheet" href="../assets/style.css">
+</head>
+<body>
 <form method="POST" class="form">
-<h2>Add Event</h2>
-
 <label>Title</label>
 <input name="title" required>
 
@@ -37,5 +41,8 @@ require '../includes/header.php';
 <input type="hidden" name="csrf" value="<?= csrf_token() ?>">
 <button>Add Event</button>
 </form>
+</body>
+</html>
+
 
 <?php require '../includes/footer.php'; ?>

@@ -32,9 +32,13 @@ if ($_POST) {
 ?>
 
 <?php require '../includes/header.php'; ?>
-
-<form method="POST" class="form">
-<h2>Create Account</h2>
+<html>
+<head>
+    <h2>Create Account</h2>
+    <link rel="stylesheet" href = "../assets/style.css"> 
+</head>
+<body>
+    <form method="POST" class="form">
 <p class="error"><?= htmlspecialchars($error) ?></p>
 
 <label>Username</label>
@@ -46,5 +50,7 @@ if ($_POST) {
 <input type="hidden" name="csrf" value="<?= csrf_token() ?>">
 <button>Create Account</button>
 </form>
+</body>
 
+</html>
 <?php require '../includes/footer.php'; ?>

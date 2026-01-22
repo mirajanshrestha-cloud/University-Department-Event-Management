@@ -8,7 +8,7 @@ $events = $pdo->query("SELECT * FROM events ORDER BY event_date");
 ?>
 
 <h2>Event Schedule</h2>
-
+   <link re="stylesheet" href="../assets/style.css">
 <form action="search.php">
 <input name="keyword" placeholder="Search events">
 <button>Search</button>
