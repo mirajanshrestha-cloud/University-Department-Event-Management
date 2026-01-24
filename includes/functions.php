@@ -1,4 +1,9 @@
 <?php
+function admin_required() {
+    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+        die("Access denied. Admins only.");
+    }
+}
 function csrf_token() {
     if (!isset($_SESSION['csrf'])) {
         $_SESSION['csrf'] = bin2hex(random_bytes(32));

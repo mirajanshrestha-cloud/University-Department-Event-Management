@@ -10,8 +10,9 @@ if ($_POST) {
     } else {
         $username = trim($_POST['username']);
         $password = $_POST['password'];
+        $role = $_POST['role'];
 
-        if (!$username || !$password) {
+        if (!$username || !$password || !$role) {
             $error = "All fields required.";
         } else {
             $check = $pdo->prepare("SELECT id FROM users WHERE username=?");
@@ -21,8 +22,12 @@ if ($_POST) {
                 $error = "Username already exists.";
             } else {
                 $hash = password_hash($password, PASSWORD_DEFAULT);
-                $stmt = $pdo->prepare("INSERT INTO users VALUES (NULL, ?, ?)");
-                $stmt->execute([$username, $hash]);
+                $stmt = $pdo->prepare(
+                    "INSERT INTO users (username, password, role)
+                     VALUES (?, ?, ?)"
+                );
+                $stmt->execute([$username, $hash, $role]);
+
                 header("Location: login.php?registered=1");
                 exit;
             }
@@ -32,13 +37,10 @@ if ($_POST) {
 ?>
 
 <?php require '../includes/header.php'; ?>
-<html>
-<head>
-    <h2>Create Account</h2>
-    <link rel="stylesheet" href = "../assets/style.css"> 
-</head>
-<body>
-    <form method="POST" class="form">
+<link rel="stylesheet" href="../assets/style.css">
+
+<form method="POST" class="form">
+<h2>Create Account</h2>
 <p class="error"><?= htmlspecialchars($error) ?></p>
 
 <label>Username</label>
@@ -47,10 +49,15 @@ if ($_POST) {
 <label>Password</label>
 <input type="password" name="password" required>
 
+<label>Register As</label>
+<select name="role" required>
+    <option value="">-- Select Role --</option>
+    <option value="admin">Admin (Department Staff)</option>
+    <option value="user">Student / Teacher</option>
+</select>
+
 <input type="hidden" name="csrf" value="<?= csrf_token() ?>">
 <button>Create Account</button>
 </form>
-</body>
 
-</html>
 <?php require '../includes/footer.php'; ?>

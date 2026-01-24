@@ -1,4 +1,7 @@
 <?php
+auth_required();
+admin_required();
+
 $stmt = $pdo->prepare("UPDATE events SET title=?, category=?, organizer=?, event_date=?, location=? WHERE id=?");
 $stmt->execute([
     $_POST['title'],

@@ -10,6 +10,7 @@ if ($_POST) {
 
     if ($user && password_verify($_POST['password'], $user['password'])) {
         $_SESSION['user'] = $user['username'];
+        $_SESSION['role'] = $user['role'];   
         header("Location: index.php");
         exit;
     } else {
@@ -19,14 +20,9 @@ if ($_POST) {
 ?>
 
 <?php require '../includes/header.php'; ?>
-<html>
-<head>
-    <h2>Login</h2>
-    <link rel="stylesheet" href="../assets/style.css">
-</head>
-<body>
-    <form class="form" method="POST">
-
+<link rel="stylesheet" href="../assets/style.css">
+<form class="form" method="POST">
+<h2>Login</h2>
 <p class="error"><?= htmlspecialchars($error) ?></p>
 
 <label>Username</label>
@@ -37,8 +33,5 @@ if ($_POST) {
 
 <button>Login</button>
 </form>
-</body>
-
 
 <?php require '../includes/footer.php'; ?>
-</html>

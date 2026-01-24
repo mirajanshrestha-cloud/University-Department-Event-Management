@@ -1,4 +1,7 @@
 <?php
+auth_required();
+admin_required();   // ✅ ONLY ADMIN
+
 require '../config/db.php';
 require '../includes/functions.php';
 auth_required();
