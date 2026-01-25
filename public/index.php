@@ -9,7 +9,6 @@ $events = $pdo->query("SELECT * FROM events ORDER BY event_date");
 
 <h2>Event Schedule</h2>
 
-<!-- FIXED CSS LINK -->
 <link rel="stylesheet" href="../assets/css/style.css">
 
 <form action="search.php" method="GET">
@@ -29,7 +28,6 @@ $events = $pdo->query("SELECT * FROM events ORDER BY event_date");
         <th>Actions</th>
     <?php endif; ?>
 </tr>
-
 <?php foreach ($events as $e): ?>
 <tr onmouseover="loadCount(<?= (int)$e['id'] ?>)">
     <td><?= htmlspecialchars($e['title']) ?></td>

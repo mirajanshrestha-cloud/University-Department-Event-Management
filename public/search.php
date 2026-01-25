@@ -12,5 +12,4 @@ $stmt->execute([$kw]);
 <?php foreach ($stmt as $e): ?>
 <p><?= htmlspecialchars($e['title']) ?> (<?= $e['event_date'] ?>)</p>
 <?php endforeach; ?>
-
 <?php require '../includes/footer.php'; ?>

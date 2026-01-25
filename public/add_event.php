@@ -46,6 +46,4 @@ require '../includes/header.php';
 </form>
 </body>
 </html>
-
-
 <?php require '../includes/footer.php'; ?>
