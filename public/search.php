@@ -6,7 +6,6 @@ $kw = "%" . $_GET['keyword'] . "%";
 $stmt = $pdo->prepare("SELECT * FROM events WHERE title LIKE ?");
 $stmt->execute([$kw]);
 ?>
-
 <h2>Search Results</h2>
 
 <?php foreach ($stmt as $e): ?>
