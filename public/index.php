@@ -39,7 +39,7 @@ $events = $pdo->query("SELECT * FROM events ORDER BY event_date");
 
     <?php if ($_SESSION['role'] === 'admin'): ?>
         <td>
-            <a href="add_event.php?id=<?= (int)$e['id'] ?>">Edit</a>
+            <a href="edit_event.php?id=<?= (int)$e['id'] ?>">Edit</a>
             <a href="delete.php?id=<?= (int)$e['id'] ?>"
                onclick="return confirm('Delete?')">Delete</a>
         </td>
