@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $stmt = $pdo->prepare("
             UPDATE events 
-            SET title = ?, category = ?, organiser = ?, event_date = ?, location = ?
+            SET title = ?, category = ?, organizer = ?, event_date = ?, location = ?
             WHERE id = ?
         ");
 
