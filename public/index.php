@@ -3,75 +3,80 @@ require '../config/db.php';
 require '../includes/functions.php';
 auth_required();
 require '../includes/header.php';
-$events = $pdo->query("
-    SELECT e.*, 
-           (SELECT COUNT(*) FROM registrations r WHERE r.event_id = e.id) AS reg_count
-    FROM events e
-    ORDER BY event_date
-");
 ?>
 
-<h2>Event Schedule</h2>
+<main>
+    <div class="page-container">
 
-<link rel="stylesheet" href="../assets/style.css">
+        <!-- Page Title -->
+        <div class="topic">
+            <h2>Event Schedule</h2>
+        </div>
 
-<form action="search.php" method="GET">
-    <input name="keyword" placeholder="Search events">
-    <button>Search</button>
-</form>
+        <!-- Search Filter -->
+        <div class="search-filter">
+            <input type="text" id="searchKeyword" placeholder="Search events">
+            <select id="filterCategory">
+                <option value="">All Categories</option>
+                <?php
+                $categories = $pdo->query("SELECT DISTINCT category FROM events")->fetchAll(PDO::FETCH_COLUMN);
+                foreach ($categories as $cat) {
+                    echo "<option value='" . htmlspecialchars($cat) . "'>" . htmlspecialchars($cat) . "</option>";
+                }
+                ?>
+            </select>
+            <button id="searchBtn">Search</button>
+        </div>
 
-<table>
-<tr>
-    <th>Title</th>
-    <th>Date</th>
-    <th>Location</th>
-    <th>Organiser</th>
-    <th>Registrations</th>
+        <!-- Event Grid -->
+        <div id="eventGrid" class="event-grid">
+            <!-- Initial events will load here -->
+        </div>
 
-    <?php if ($_SESSION['role'] === 'admin'): ?>
-        <th>Actions</th>
-    <?php endif; ?>
-</tr>
-<?php foreach ($events as $e): ?>
-<tr onmouseover="loadCount(<?= (int)$e['id'] ?>)">
-    <td><?= htmlspecialchars($e['title']) ?></td>
-    <td><?= htmlspecialchars($e['event_date']) ?></td>
-    <td><?= htmlspecialchars($e['location']) ?></td>
-    <td><?= htmlspecialchars($e['organizer']) ?></td>
-    <td><?= (int)$e['reg_count'] ?></td>
-    <!-- <td id="count-<?= (int)$e['id'] ?>">0</td> -->
-
-    <?php if ($_SESSION['role'] === 'admin'): ?>
-        <td>
-            <a href="edit_event.php?id=<?= (int)$e['id'] ?>">Edit</a>
-            <a href="delete.php?id=<?= (int)$e['id'] ?>"
-               onclick="return confirm('Delete?')">Delete</a>
-        </td>
-    <?php endif; ?>
-    <td>
-    <form action="register_event.php" method="POST" style="display:inline;">
-        <input type="hidden" name="event_id" value="<?= (int)$e['id'] ?>">
-        <input type="hidden" name="csrf" value="<?= csrf_token() ?>">
-        <button type="submit" class="btn-register">Register</button>
-    </form>
-</td>
-</tr>
-<?php endforeach; ?>
-</table>
-<?php
-$check = $pdo->prepare("SELECT 1 FROM registrations WHERE user_id=? AND event_id=?");
-$check->execute([$_SESSION['user_id'], $e['id']]);
-$already = $check->fetch();
-?>
-
-<?php if ($already): ?>
-    <span class="registered">Registered</span>
-<?php else: ?>
-    <form action="register_event.php" method="POST" style="display:inline;">
-        <input type="hidden" name="event_id" value="<?= (int)$e['id'] ?>">
-        <input type="hidden" name="csrf" value="<?= csrf_token() ?>">
-        <button type="submit" class="btn-register">Register</button>
-    </form>
-<?php endif; ?>
+    </div>
+</main>
 
 <?php require '../includes/footer.php'; ?>
+<style>
+    .page-container {
+        padding-bottom: 225px; 
+        margin-bottom: 200px;
+    }
+</style>
+<!-- AJAX & JS -->
+<script>
+function toggleActions(id) {
+    const el = document.getElementById('actions-' + id);
+    if(el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+// Load events from server
+function loadEvents(keyword = '', category = '') {
+    const formData = new FormData();
+    formData.append('keyword', keyword);
+    formData.append('category', category);
+
+    fetch('ajax_count.php', { method: 'POST', body: formData })
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById('eventGrid').innerHTML = html;
+        });
+}
+
+// Initial load
+loadEvents();
+
+// Search button click
+document.getElementById('searchBtn').addEventListener('click', () => {
+    const keyword = document.getElementById('searchKeyword').value.trim();
+    const category = document.getElementById('filterCategory').value;
+    loadEvents(keyword, category);
+});
+
+// Live search while typing
+document.getElementById('searchKeyword').addEventListener('input', () => {
+    const keyword = document.getElementById('searchKeyword').value.trim();
+    const category = document.getElementById('filterCategory').value;
+    loadEvents(keyword, category);
+});
+</script>

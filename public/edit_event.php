@@ -6,7 +6,6 @@ auth_required();
 admin_required();
 require '../includes/header.php';
 
-/* VALIDATE ID */
 if (!isset($_GET['id'])) {
     header("Location: index.php");
     exit;
@@ -56,8 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<h2>Edit Event</h2>
-
 <form method="POST" class="form">
 
     <label>Title</label>
@@ -75,11 +72,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <label>Location</label>
     <input name="location" value="<?= htmlspecialchars($event['location']) ?>" required>
 
-    <!-- CSRF TOKEN -->
     <input type="hidden" name="csrf" value="<?= csrf_token() ?>">
 
     <button type="submit">Update Event</button>
-    <a href="index.php" class="btn-secondary">Cancel</a>
-</form>
+<button type="button" id="btn-secondary" onclick="window.location.href='index.php'" style="background-color:#dc3545; color:#fff; padding:10px 16px; border:none; border-radius:4px; font-weight:bold; cursor:pointer; transition:0.2s;">Cancel</button></form>
 
 <?php require '../includes/footer.php'; ?>
