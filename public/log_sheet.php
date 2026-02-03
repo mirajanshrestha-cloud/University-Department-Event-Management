@@ -6,7 +6,6 @@ auth_required();
 admin_required();
 require '../includes/header.php';
 
-/* Fetch registrations grouped by event */
 $stmt = $pdo->query("
     SELECT event_title, username, registered_at
     FROM registrations

@@ -29,10 +29,9 @@ require '../includes/header.php';
         </div>
 
         <!-- Event Grid -->
-        <div id="eventGrid" class="event-grid">
+     <div id="eventGrid" class="event-grid">
             <!-- Initial events will load here -->
         </div>
-
     </div>
 </main>
 

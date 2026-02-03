@@ -4,12 +4,10 @@ require '../includes/functions.php';
 
 auth_required();
 
-/* CSRF check */
 if (!check_csrf($_POST['csrf'] ?? '')) {
     die("Invalid CSRF token.");
 }
 
-/* Event ID check */
 if (!isset($_POST['event_id'])) {
     header("Location: index.php");
     exit;
@@ -19,7 +17,6 @@ $user_id  = (int) $_SESSION['user_id'];
 $event_id = (int) $_POST['event_id'];
 $username = $_SESSION['user'] ?? '';
 
-/* Fetch event details and current registration count */
 $stmt = $pdo->prepare("
     SELECT id, title, max_participants,
            (SELECT COUNT(*) FROM registrations WHERE event_id = ?) AS reg_count
@@ -52,7 +49,6 @@ if ($max !== 0 && $current >= $max) {
     exit;
 }
 
-/* Register user */
 $stmt = $pdo->prepare("
     INSERT INTO registrations (user_id, event_id, username, event_title)
     VALUES (?, ?, ?, ?)

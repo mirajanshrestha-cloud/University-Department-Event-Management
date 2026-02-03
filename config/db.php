@@ -1,8 +1,8 @@
 <?php
 $host = "localhost";
-$dbname = "event_management";
-$user = "root";
-$pass = "";
+$dbname = "np03cs4a240235";
+$user = "np03cs4a240235";
+$pass = "qhtQbymU44";
 session_start();
 
 try {

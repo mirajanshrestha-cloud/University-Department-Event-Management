@@ -89,3 +89,11 @@ document.getElementById('searchKeyword').addEventListener('input', () => {
     const category = document.getElementById('filterCategory').value;
     loadEvents(keyword, category);
 });
+
+function toggleActions(id) {
+    const el = document.getElementById('actions-' + id);
+    if (!el) return;
+
+    el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+}
+

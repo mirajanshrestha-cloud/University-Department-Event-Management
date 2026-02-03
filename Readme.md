@@ -30,6 +30,15 @@ This application is built without frameworks or template engines, demonstrating 
 - Secure password handling
 - Clean UI using custom CSS
 
+# User Credentials:
+## User Account 
+Username: mirajan_shrestha
+Password: #mirajan12 
+
+## Admin Account 
+Username: Deepson Shrestha
+Password: #deepson12
+
 
 # Tech Stack
 |_______________________________|

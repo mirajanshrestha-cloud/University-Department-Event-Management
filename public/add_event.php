@@ -16,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("Invalid CSRF token.");
     }
 
-    // Collect inputs
     $title = trim($_POST['title'] ?? '');
     $category = trim($_POST['category'] ?? '');
     $organiser = trim($_POST['organiser'] ?? '');
