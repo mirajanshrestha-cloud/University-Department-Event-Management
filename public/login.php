@@ -1,56 +1,76 @@
 <?php
+session_start();
+
 require '../config/db.php';
 require '../includes/functions.php';
 
 $error = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE username=?");
-    $stmt->execute([$_POST['username']]);
-    $user = $stmt->fetch();
 
-    if ($user && password_verify($_POST['password'], $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['user']    = $user['username'];
-        $_SESSION['role']    = $user['role'];
-        header("Location: index.php");
-        exit;
+    $username = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    if ($username === '' || $password === '') {
+        $error = "All fields are required.";
     } else {
-        $error = "Invalid login details.";
+
+        /* Prepared statement prevents SQL Injection */
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+        $stmt->execute([$username]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && password_verify($password, $user['password'])) {
+
+            session_regenerate_id(true);
+
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user']    = $user['username'];
+            $_SESSION['role']    = $user['role'];
+
+            header("Location: index.php");
+            exit;
+        } else {
+            $error = "Invalid username or password.";
+        }
     }
 }
 
 require '../includes/header.php';
 ?>
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 </head>
 <body>
+
+<div class="form-container">
     <h2>Login</h2>
-    <form class="form" method="POST">
-    <h2>Login</h2>
-    <p class="error"><?= htmlspecialchars($error) ?></p>
 
-    <label>Username</label>
-    <input name="username" required>
+    <?php if ($error): ?>
+        <p class="error"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></p>
+    <?php endif; ?>
 
-    <label>Password</label>
-    <input type="password" name="password" required>
+    <form method="POST">
+        <label>Username</label>
+        <input type="text" name="username" required>
 
-    <button type="submit">Login</button>
-</form>
+        <label>Password</label>
+        <input type="password" name="password" required>
+        <br><br>
+        <button type="submit">Login</button>
+    </form>
+</div>
+
 </body>
 </html>
 <style>
-    .page-container {
-        flex: 1;
-        margin-top: 50px;
-        padding: 134px 20px; 
+    .form-container {
+        padding-bottom: 75px; 
     }
 </style>
-
 <?php require '../includes/footer.php'; ?>
